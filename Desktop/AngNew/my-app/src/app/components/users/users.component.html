@@ -1,0 +1,92 @@
+<button (click)= "showUserForm = !showUserForm" class="btn btn-dark mb-3">Add User</button>
+<div class="card card-body mb-3" *ngIf="showUserForm">
+  <h2>Add User</h2>
+  <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+    <div class="form-group">
+      <label>First Name</label>
+      <div>
+      <input 
+        type="text" 
+        class="form-control" 
+        name="firstName" 
+        [(ngModel)]="user.firstName"
+        #userFirstName= "ngModel"
+        [ngClass] = "{'is-invalid': userFirstName.errors && userFirstName.touched}"
+        required
+        minlength="2"
+      >
+      <div [hidden]="!userFirstName.errors?.minlength" class="invalid-feedback">
+          Atleast 2 characters
+          
+      </div>
+      <div [hidden]="!userFirstName.errors?.required" class="invalid-feedback">
+          First name required
+
+      </div>
+    </div>
+    <div>
+      <label>Last Name</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        name="lastName" 
+        [(ngModel)]="user.lastName"
+        #userlastName= "ngModel"
+        [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
+        required
+        minlength="2"
+      >
+      <div [hidden]="!userlastName.errors?.minlength" class="invalid-feedback">
+          Atleast 2 characters
+          
+      </div>
+      <div [hidden]="!userlastName.errors?.required" class="invalid-feedback">
+          Last name required
+
+      </div>
+    </div>
+    <div>
+      <label>Email</label>
+      <input 
+      type="email" 
+      class="form-control mb-2" 
+      name="email" 
+      [(ngModel)]="user.email"
+      #userEmail = "ngModel"
+      [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched}"
+      required
+      minlength="5"
+      >
+      <div [hidden]="!userEmail.errors?.required" class="invalid-feedback">
+        Email required
+      </div>
+      <div [hidden]="!userEmail.errors?.minlength" class="invalid-feedback">
+        Enter Valid Email
+      </div>
+    </div>
+  
+    <button [disabled]="!userForm.form.valid" class="btn btn-block mb-3">Add New User</button>
+  </div>
+  </form>
+</div>
+
+
+<ul class="list-unstyled">
+  <li class="card card-body mb-2" *ngFor="let user of users" [class.bg-light]="user.isActive">
+
+    <h3>{{ user.firstName }} {{user.lastName}}
+      <small>
+        <button (click)="user.hide = !user.hide" class="btn btn-dark btn-sm">
+          <i [ngClass]="user.hide ? 'fa fa-plus' : 'fa fa-minus'"></i>
+        </button>
+      </small>
+    </h3>
+    <ul class="list-group" *ngIf="!user.hide">
+      <li class="list-group-item">Email: {{user.email}}</li>
+      <li class="list-group-item">Joined: {{user.registered | date}}</li>
+    </ul>
+
+
+
+  </li>
+</ul>
